@@ -156,10 +156,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7.1"
+            android:layout_weight="11"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/play" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2"
             android:background="#0c78a7"
             android:orientation="vertical"></LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
