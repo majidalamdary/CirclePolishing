@@ -1,6 +1,7 @@
 package com.intermuda.circlepolishing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         wm.getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
-        set_content();
         fun = new functions();
 
         font_name = fun.font_name;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 //        functions.u_name =  settings.getString("homeScore","");
 
         tf = Typeface.createFromAsset(getAssets(),font_name );
+        set_content();
+
     }
     private void set_content()
     {
@@ -131,5 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public void clk_play(View view) {
+        startActivity(new Intent(this,GameBoard.class));
+    }
 }
