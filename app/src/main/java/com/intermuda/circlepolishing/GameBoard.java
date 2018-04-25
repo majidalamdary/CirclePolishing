@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -692,5 +693,27 @@ public class GameBoard extends AppCompatActivity {
         // Display the newly created bitmap on app interface
         // ImageView mImageView = findViewById(R.id.imageView);
         img_circles[img_count].setImageBitmap(bitmap);
+    }
+
+    public void clk_random_txt(View view) {
+
+
+        TextView txt_random = (TextView) view;
+
+        if(txt_random.getId() == R.id.txt_random_box1)
+        {
+            Toast.makeText(this, txt_random.getText().toString(), Toast.LENGTH_SHORT).show();
+
+        }
+        if(txt_random.getId() == R.id.txt_random_box2)
+        {
+            Toast.makeText(this, txt_random.getText().toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    public void clk_ans_txt(View view) {
+
     }
 }
