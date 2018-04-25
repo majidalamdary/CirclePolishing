@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class GameBoard extends AppCompatActivity {
     ImageView imageview;
     ImageView imageview1;
@@ -29,6 +32,10 @@ public class GameBoard extends AppCompatActivity {
     String
             font_name = "";
     functions fun;
+
+    String
+        target_word = "";
+
 
     Typeface tf;
     int img_count = 1;
@@ -48,7 +55,7 @@ public class GameBoard extends AppCompatActivity {
         fun = new functions();
 
         font_name = fun.font_name;
-
+        target_word = "instagram";
 
 //        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
 //        fun.u_name =  settings.getString("homeScore","");
@@ -148,18 +155,129 @@ public class GameBoard extends AppCompatActivity {
         img_circles[img_count].setImageBitmap(bitmap);
         set_content_size();
 
+        set_boxes();
+
 
     }
+
+    private void set_boxes() {
+        for ( int i=1;i<=16;i++)
+        {
+            lay_ans_box[i].setVisibility(View.GONE);
+        }
+        for ( int i=1;i<=target_word.length();i++)
+        {
+            lay_ans_box[i].setVisibility(View.VISIBLE);
+        }
+        for ( int i=1;i<=16;i++)
+        {
+            txt_ans_box[i].setText("");
+        }
+        target_word = target_word.toUpperCase();
+        int[] pos_char = new int[17];
+        for(int i=1;i<=target_word.length();i++)
+        {
+            boolean flag = true;
+            while(flag) {
+                flag=false;
+                pos_char[i] = new Random().nextInt(20)+1;
+                for (int j = 1; j < i; j++) {
+                        if(pos_char[j]==pos_char[i])
+                        {
+                            flag=true;
+                            break;
+                        }
+                }
+            }
+        }
+        for(int i=1;i<=16;i++)
+        {
+            Log.d("majid",String.valueOf(pos_char[i])+"-");
+        }
+        for(int i =1;i<=21;i++)
+        {
+            int flag=0;
+            for(int j=1;j<=target_word.length();j++)
+            {
+                if(i==pos_char[j])
+                    flag=j;
+            }
+            if(flag>0)
+            {
+                txt_random_box[i].setText(String.valueOf(target_word.charAt(flag-1)));
+            }
+            else
+            {
+                txt_random_box[i].setText(Character.toString ((char) (new Random().nextInt(26)+65)));
+            }
+
+        }
+
+
+    }
+
+    LinearLayout[] lay_ans_box = new LinearLayout[19];
+    LinearLayout[] lay_random_box = new LinearLayout[22];
+    TextView[] txt_ans_box = new TextView[19];
+    TextView[] txt_random_box = new TextView[22];
+
     private void set_content_size()
     {
+        int
+            a=0;
+        int
+            txt_size =(int) (screenWidth * 0.08);
+
+        LinearLayout.LayoutParams lp_lay_ans= new LinearLayout.LayoutParams((int)(screenWidth*.112),(int)(screenWidth*.112));
+        lp_lay_ans.setMarginEnd((int) (screenWidth * 0.007));;
+        a=1; lay_ans_box[a] = findViewById(R.id.lay_ans_box1); txt_ans_box[a] = findViewById(R.id.txt_ans_box1);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=2; lay_ans_box[a] = findViewById(R.id.lay_ans_box2); txt_ans_box[a] = findViewById(R.id.txt_ans_box2);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=3; lay_ans_box[a] = findViewById(R.id.lay_ans_box3); txt_ans_box[a] = findViewById(R.id.txt_ans_box3);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=4; lay_ans_box[a] = findViewById(R.id.lay_ans_box4); txt_ans_box[a] = findViewById(R.id.txt_ans_box4);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=5; lay_ans_box[a] = findViewById(R.id.lay_ans_box5); txt_ans_box[a] = findViewById(R.id.txt_ans_box5);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=6; lay_ans_box[a] = findViewById(R.id.lay_ans_box6); txt_ans_box[a] = findViewById(R.id.txt_ans_box6);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=7; lay_ans_box[a] = findViewById(R.id.lay_ans_box7); txt_ans_box[a] = findViewById(R.id.txt_ans_box7);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=8; lay_ans_box[a] = findViewById(R.id.lay_ans_box8); txt_ans_box[a] = findViewById(R.id.txt_ans_box8);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=9; lay_ans_box[a] = findViewById(R.id.lay_ans_box9); txt_ans_box[a] = findViewById(R.id.txt_ans_box9);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=10; lay_ans_box[a] = findViewById(R.id.lay_ans_box10); txt_ans_box[a] = findViewById(R.id.txt_ans_box10);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=11; lay_ans_box[a] = findViewById(R.id.lay_ans_box11); txt_ans_box[a] = findViewById(R.id.txt_ans_box11);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=12; lay_ans_box[a] = findViewById(R.id.lay_ans_box12); txt_ans_box[a] = findViewById(R.id.txt_ans_box12);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=13; lay_ans_box[a] = findViewById(R.id.lay_ans_box13); txt_ans_box[a] = findViewById(R.id.txt_ans_box13);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=14; lay_ans_box[a] = findViewById(R.id.lay_ans_box14); txt_ans_box[a] = findViewById(R.id.txt_ans_box14);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=15; lay_ans_box[a] = findViewById(R.id.lay_ans_box15); txt_ans_box[a] = findViewById(R.id.txt_ans_box15);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        a=16; lay_ans_box[a] = findViewById(R.id.lay_ans_box16); txt_ans_box[a] = findViewById(R.id.txt_ans_box16);lay_ans_box[a].setLayoutParams(lp_lay_ans);txt_ans_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_ans_box[a].setTypeface(tf);
+        txt_size =(int) (screenWidth * 0.067);
+        LinearLayout.LayoutParams lp_lay_random= new LinearLayout.LayoutParams((int)(screenWidth*.098),(int)(screenWidth*.098));
+        lp_lay_random.setMarginEnd((int) (screenWidth * 0.007));
+
+        a=1; lay_random_box[a] = findViewById(R.id.lay_random_box1); txt_random_box[a] = findViewById(R.id.txt_random_box1);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=2; lay_random_box[a] = findViewById(R.id.lay_random_box2); txt_random_box[a] = findViewById(R.id.txt_random_box2);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=3; lay_random_box[a] = findViewById(R.id.lay_random_box3); txt_random_box[a] = findViewById(R.id.txt_random_box3);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=4; lay_random_box[a] = findViewById(R.id.lay_random_box4); txt_random_box[a] = findViewById(R.id.txt_random_box4);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=5; lay_random_box[a] = findViewById(R.id.lay_random_box5); txt_random_box[a] = findViewById(R.id.txt_random_box5);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=6; lay_random_box[a] = findViewById(R.id.lay_random_box6); txt_random_box[a] = findViewById(R.id.txt_random_box6);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=7; lay_random_box[a] = findViewById(R.id.lay_random_box7); txt_random_box[a] = findViewById(R.id.txt_random_box7);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=8; lay_random_box[a] = findViewById(R.id.lay_random_box8); txt_random_box[a] = findViewById(R.id.txt_random_box8);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=9; lay_random_box[a] = findViewById(R.id.lay_random_box9); txt_random_box[a] = findViewById(R.id.txt_random_box9);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=10; lay_random_box[a] = findViewById(R.id.lay_random_box10); txt_random_box[a] = findViewById(R.id.txt_random_box10);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=11; lay_random_box[a] = findViewById(R.id.lay_random_box11); txt_random_box[a] = findViewById(R.id.txt_random_box11);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=12; lay_random_box[a] = findViewById(R.id.lay_random_box12); txt_random_box[a] = findViewById(R.id.txt_random_box12);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=13; lay_random_box[a] = findViewById(R.id.lay_random_box13); txt_random_box[a] = findViewById(R.id.txt_random_box13);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=14; lay_random_box[a] = findViewById(R.id.lay_random_box14); txt_random_box[a] = findViewById(R.id.txt_random_box14);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=15; lay_random_box[a] = findViewById(R.id.lay_random_box15); txt_random_box[a] = findViewById(R.id.txt_random_box15);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=16; lay_random_box[a] = findViewById(R.id.lay_random_box16); txt_random_box[a] = findViewById(R.id.txt_random_box16);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=17; lay_random_box[a] = findViewById(R.id.lay_random_box17); txt_random_box[a] = findViewById(R.id.txt_random_box17);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=18; lay_random_box[a] = findViewById(R.id.lay_random_box18); txt_random_box[a] = findViewById(R.id.txt_random_box18);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=19; lay_random_box[a] = findViewById(R.id.lay_random_box19); txt_random_box[a] = findViewById(R.id.txt_random_box19);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=20; lay_random_box[a] = findViewById(R.id.lay_random_box20); txt_random_box[a] = findViewById(R.id.txt_random_box20);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+        a=21; lay_random_box[a] = findViewById(R.id.lay_random_box21); txt_random_box[a] = findViewById(R.id.txt_random_box21);lay_random_box[a].setLayoutParams(lp_lay_random);txt_random_box[a].setTextSize(TypedValue.COMPLEX_UNIT_PX, txt_size);txt_random_box[a].setTypeface(tf);
+
 
 
         LinearLayout lay_words = findViewById(R.id.lay_words);
         LinearLayout.LayoutParams lp_lay_containt_image = (LinearLayout.LayoutParams) lay_words.getLayoutParams();
         lp_lay_containt_image.width = (img_size);
         lp_lay_containt_image.height = (int)(screenHeight*.2);
-        lp_lay_containt_image.setMarginStart((int) (screenWidth * .13));
-        lp_lay_containt_image.topMargin = (int) (screenWidth * .001);
 
 
         lay_words.setLayoutParams(lp_lay_containt_image);

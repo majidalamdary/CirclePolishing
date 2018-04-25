@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         ImageView img_play = findViewById(R.id.img_play);
-        LinearLayout.LayoutParams lp_img_play = new LinearLayout.LayoutParams((int)(screenWidth*.6),(int)(screenHeight*.6));
+        LinearLayout.LayoutParams lp_img_play = new LinearLayout.LayoutParams((int)(screenWidth*.58),(int)(screenHeight*.58));
         img_play.setLayoutParams(lp_img_play);
 
 
