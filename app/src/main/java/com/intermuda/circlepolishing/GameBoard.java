@@ -25,23 +25,27 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-public class GameBoard extends AppCompatActivity {
+public class GameBoard extends AppCompatActivity  {
     ImageView imageview;
     ImageView imageview1;
     private int screenWidth;
     private int screenHeight;
+    RelativeLayout relativelayout ;
+   // View[] onTouchView = new View[2000000];
     String
             font_name = "";
     functions fun;
 
     String
         target_word = "";
-
+    Timer tim;
 
     Typeface tf;
     int img_count = 1;
 
-    ImageView[] img_circles = new ImageView[500000];
+    ImageView[][][] img_circles = new ImageView[8][65][65];
+    int[] img_color_circle = new int[16400];
+
     int
             img_size = 0;
 
@@ -57,7 +61,7 @@ public class GameBoard extends AppCompatActivity {
 
         font_name = fun.font_name;
         target_word = "instagram";
-
+        relativelayout =findViewById(R.id.lay_contain_image);
 //        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
 //        fun.u_name =  settings.getString("homeScore","");
 //        functions.u_name =  settings.getString("homeScore","");
@@ -68,12 +72,7 @@ public class GameBoard extends AppCompatActivity {
         imageview1 = findViewById(R.id.imageView);
 
 
-        img_circles[img_count] = new ImageView(GameBoard.this);
-        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        img_circles[img_count].setContentDescription(String.valueOf(img_count));
-        img_circles[img_count].setLayoutParams(params);
-        relativelayout.addView(img_circles[img_count]);
+
 
 
         RelativeLayout lay_containt_image = findViewById(R.id.lay1);
@@ -92,68 +91,6 @@ public class GameBoard extends AppCompatActivity {
         lp_img.height = img_size;
         imageview1.setLayoutParams(lp_img);
 
-        Bitmap bitmap = ((BitmapDrawable) imageview1.getDrawable()).getBitmap();
-
-        int
-                sum_red = 0;
-        int
-                sum_blue = 0;
-        int
-                sum_green = 0;
-        int
-                pixel_count = 0;
-        int redValue = 0;
-        int blueValue = 0;
-        int greenValue = 0;
-        for (int i = 1; i < bitmap.getWidth(); i += 4) {
-            for (int j = 1; j < bitmap.getHeight(); j += 4) {
-
-                int pixel = bitmap.getPixel(i, j);
-
-                pixel_count++;
-                redValue = Color.red(pixel);
-                blueValue = Color.blue(pixel);
-                greenValue = Color.green(pixel);
-                sum_red += redValue;
-                sum_green += greenValue;
-                sum_blue += blueValue;
-
-            }
-
-        }
-        int avg_red = (int) (sum_red / pixel_count);
-        int avg_blue = (int) (sum_blue / pixel_count);
-        int avg_green = (int) (sum_green / pixel_count);
-
-        bitmap = Bitmap.createBitmap(
-                img_size, // Width
-                img_size, // Height
-                Bitmap.Config.ARGB_8888 // Config
-        );
-
-        // Initialize a new Canvas instance
-        Canvas canvas = new Canvas(bitmap);
-
-        // Draw a solid color to the canvas background
-        canvas.drawColor(Color.WHITE);
-
-        // Initialize a new Paint instance to draw the Circle
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.rgb(avg_red, avg_green, avg_blue));
-        paint.setAntiAlias(true);
-
-
-        canvas.drawCircle(
-                canvas.getWidth() / 2, // cx
-                canvas.getHeight() / 2, // cy
-                (int) (img_size / 2), // Radius
-                paint // Paint
-        );
-
-        // Display the newly created bitmap on app interface
-        // ImageView mImageView = findViewById(R.id.imageView);
-        img_circles[img_count].setImageBitmap(bitmap);
         set_content_size();
 
         set_boxes();
@@ -346,225 +283,294 @@ public class GameBoard extends AppCompatActivity {
         imageRect = new Rect();
         int x = (int) event.getX();
         int y = (int) event.getY();
-        for (int i = 1; i <= img_count; i++) {
-            img_circles[i].getGlobalVisibleRect(imageRect);
 
-            if (imageRect.contains(x, y)) {
-                break_image(img_circles[i]);
-                // break;
+               relativelayout.getGlobalVisibleRect(imageRect);
+        if (imageRect.contains(x, y)) {
+            int
+                    X_image = imageRect.centerX()-(imageRect.width()/2);
+            int
+                    Y_image = imageRect.centerY()-(imageRect.height()/2);
+
+            int
+                    new_x=x-X_image;
+            int
+                    new_y=y-Y_image;
+            int cirle_size=(int)(img_size/64);
+
+
+            int
+                    circle_number = ((int)Math.floor(new_x/cirle_size));
+            int
+                    circle_number1 = ((int)Math.floor(new_y/cirle_size));
+
+            circle_number=63-circle_number+1;
+         //   circle_number1=63-circle_number1+1;
+
+            for(int l=7;l>=2;l--) {
+                int
+                        i = (circle_number / ((int) ((Math.pow(2, l - 1)))));
+                int
+                        j = (circle_number1 / ((int) ((Math.pow(2, l - 1))))) ;
+
+                i=i*(int)(Math.pow(2, l - 1))+1;
+                j=j*(int)(Math.pow(2, l - 1))+1;
+                if(i==0)
+                    i=1;
+                if(j==0)
+                    j=1;
+                if(i<65 && j<65)
+                if(img_circles[l][i][j].getVisibility()!=View.GONE)
+                {
+                    img_circles[l][i][j].setVisibility(View.GONE);
+                    img_circles[l - 1][i][j].setVisibility(View.VISIBLE);
+                    img_circles[l - 1][i][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
+                    img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
+                    img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j].setVisibility(View.VISIBLE);
+
+                    break;
+                }
+               // Log.d("majid", "x= " + String.valueOf(i) + "  y= " + String.valueOf(j)+" l= "+String.valueOf(l));
+
+
+
+
             }
+            //Log.d("majid","x= "+String.valueOf(x)+"  y= "+String.valueOf(y));
         }
+
+
+
+
+//        for(int i=2;i<=7;i++)
+//        {
+//
+//        }
+
+
+
+
+
 
         return false;
     }
 
-    public void break_image(ImageView img_view) {
-        //Toast.makeText(this, String.valueOf(img_view.getWidth()), Toast.LENGTH_SHORT).show();
-        if (img_view.getTextDirection() != 2) {
-
-            if (img_view.getWidth() > 20) {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) img_view.getLayoutParams();
-                // Log.d("majid", "touch passing over imageView" + String.valueOf(lp.getMarginStart()));
-                int
-                        circle_size = img_view.getWidth();
-                try {
-                    bitmap = Bitmap.createBitmap(
-                            circle_size / 2, // Width
-                            circle_size / 2, // Height
-                            Bitmap.Config.ARGB_8888 // Config
-                    );
-
-                    // Initialize a new Canvas instance
-                    Canvas canvas = new Canvas(bitmap);
-
-                    // Draw a solid color to the canvas background
-                    //  canvas.drawColor(Color.WHITE);
-
-                    // Initialize a new Paint instance to draw the Circle
-                    Paint paint = new Paint();
-                    paint.setStyle(Paint.Style.FILL);
-
-                    int clr = get_color(lp.getMarginStart(), lp.topMargin, circle_size / 2);
-
-                    paint.setColor(clr);
-                    paint.setAntiAlias(true);
-
-
-                    canvas.drawCircle(
-                            circle_size / 4, // cx
-                            circle_size / 4, // cy
-                            (int) (circle_size / 4), // Radius
-                            paint // Paint
-                    );
-
-                    if(clr!=-1) {
-                        img_count++;
-                        img_circles[img_count] = new ImageView(GameBoard.this);
-                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
-                        params.setMarginStart(lp.getMarginStart());
-                        params.topMargin = lp.topMargin;
-                        img_circles[img_count].setLayoutParams(params);
-                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
-                        relativelayout.addView(img_circles[img_count]);
-
-                        img_circles[img_count].setImageBitmap(bitmap);
-
-                    }
-
-                    img_view.setTextDirection(2);
-                    img_view.setVisibility(View.GONE);
-                    //  img_circles[Integer.valueOf(img_view.getContentDescription().toString())]=null;
-
-                } catch (Exception e2) {
-
-                }
-
-
-                try {
-                    bitmap = Bitmap.createBitmap(
-                            circle_size / 2, // Width
-                            circle_size / 2, // Height
-                            Bitmap.Config.ARGB_8888 // Config
-                    );
-
-                    // Initialize a new Canvas instance
-                    Canvas canvas = new Canvas(bitmap);
-
-                    // Draw a solid color to the canvas background
-                    canvas.drawColor(Color.WHITE);
-
-                    // Initialize a new Paint instance to draw the Circle
-                    Paint paint = new Paint();
-                    paint.setStyle(Paint.Style.FILL);
-                    int clr = get_color(lp.getMarginStart() + (circle_size / 2), lp.topMargin, circle_size / 2);
-
-                    paint.setColor(clr);
-
-                    paint.setAntiAlias(true);
-
-
-                    canvas.drawCircle(
-                            circle_size / 4, // cx
-                            circle_size / 4, // cy
-                            (int) (circle_size / 4), // Radius
-                            paint // Paint
-                    );
-                    if(clr!=-1) {
-                        img_count++;
-                        img_circles[img_count] = new ImageView(GameBoard.this);
-                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
-                        params.setMarginStart(lp.getMarginStart() + (circle_size / 2));
-                        params.topMargin = lp.topMargin;
-                        img_circles[img_count].setLayoutParams(params);
-                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
-                        relativelayout.addView(img_circles[img_count]);
-
-                        img_circles[img_count].setImageBitmap(bitmap);
-                    }
-                } catch (Exception e3) {
-
-                }
-                try {
-                    bitmap = Bitmap.createBitmap(
-                            circle_size / 2, // Width
-                            circle_size / 2, // Height
-                            Bitmap.Config.ARGB_8888 // Config
-                    );
-
-                    // Initialize a new Canvas instance
-                    Canvas canvas = new Canvas(bitmap);
-
-                    // Draw a solid color to the canvas background
-                    canvas.drawColor(Color.WHITE);
-
-                    // Initialize a new Paint instance to draw the Circle
-                    Paint paint = new Paint();
-                    paint.setStyle(Paint.Style.FILL);
-                    int clr = get_color(lp.getMarginStart(), lp.topMargin + (circle_size / 2), circle_size / 2);
-
-                    paint.setColor(clr);
-
-                    paint.setAntiAlias(true);
-
-
-                    canvas.drawCircle(
-                            circle_size / 4, // cx
-                            circle_size / 4, // cy
-                            (int) (circle_size / 4), // Radius
-                            paint // Paint
-                    );
-                    if(clr!=-1) {
-                        img_count++;
-                        img_circles[img_count] = new ImageView(GameBoard.this);
-                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
-                        params.setMarginStart(lp.getMarginStart());
-                        params.topMargin = lp.topMargin + (circle_size / 2);
-                        img_circles[img_count].setLayoutParams(params);
-                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
-                        relativelayout.addView(img_circles[img_count]);
-
-                        img_circles[img_count].setImageBitmap(bitmap);
-                    }
-                } catch (Exception e3) {
-
-                }
-
-                try {
-                    bitmap = Bitmap.createBitmap(
-                            circle_size / 2, // Width
-                            circle_size / 2, // Height
-                            Bitmap.Config.ARGB_8888 // Config
-                    );
-
-                    // Initialize a new Canvas instance
-                    Canvas canvas = new Canvas(bitmap);
-
-                    // Draw a solid color to the canvas background
-                    canvas.drawColor(Color.WHITE);
-
-                    // Initialize a new Paint instance to draw the Circle
-                    Paint paint = new Paint();
-                    paint.setStyle(Paint.Style.FILL);
-                    int clr = get_color(lp.getMarginStart() + (circle_size / 2), lp.topMargin + (circle_size / 2), circle_size / 2);
-
-                    paint.setColor(clr);
-
-                    paint.setAntiAlias(true);
-
-
-                    canvas.drawCircle(
-                            circle_size / 4, // cx
-                            circle_size / 4, // cy
-                            (int) (circle_size / 4), // Radius
-                            paint // Paint
-                    );
-                    if(clr!=-1) {
-                        img_count++;
-                        img_circles[img_count] = new ImageView(GameBoard.this);
-                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
-                        params.setMarginStart(lp.getMarginStart() + (circle_size / 2));
-                        params.topMargin = lp.topMargin + (circle_size / 2);
-                        img_circles[img_count].setLayoutParams(params);
-                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
-                        relativelayout.addView(img_circles[img_count]);
-
-                        img_circles[img_count].setImageBitmap(bitmap);
-                    }
-                } catch (Exception e3) {
-
-                }
-
-
-                //  Toast.makeText(this, String.valueOf(img_view.getContentDescription().toString()), Toast.LENGTH_SHORT).show();
-
-            }
-        }
-
-    }
+//    public void break_image(ImageView img_view) {
+//        //Toast.makeText(this, String.valueOf(img_view.getWidth()), Toast.LENGTH_SHORT).show();
+//        //if (img_view.getTextDirection() != 2)
+//        {
+//
+//            //if (img_view.getWidth() > 20)
+//            {
+//                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) img_view.getLayoutParams();
+//                // Log.d("majid", "touch passing over imageView" + String.valueOf(lp.getMarginStart()));
+//                int
+//                        circle_size = img_view.getWidth();
+//                try {
+//                    bitmap = Bitmap.createBitmap(
+//                            circle_size / 2, // Width
+//                            circle_size / 2, // Height
+//                            Bitmap.Config.ARGB_8888 // Config
+//                    );
+//
+//                    // Initialize a new Canvas instance
+//                    Canvas canvas = new Canvas(bitmap);
+//
+//                    // Draw a solid color to the canvas background
+//                    //  canvas.drawColor(Color.WHITE);
+//
+//                    // Initialize a new Paint instance to draw the Circle
+//                    Paint paint = new Paint();
+//                    paint.setStyle(Paint.Style.FILL);
+//
+//                    int clr = get_color(lp.getMarginStart(), lp.topMargin, circle_size / 2);
+//
+//                    paint.setColor(clr);
+//                    paint.setAntiAlias(true);
+//
+//
+//                    canvas.drawCircle(
+//                            circle_size / 4, // cx
+//                            circle_size / 4, // cy
+//                            (int) (circle_size / 4), // Radius
+//                            paint // Paint
+//                    );
+//                    for(int i=1;i<img_count-1;i++)
+//                    {
+//                        if(img_circles[i].getTextDirection()==2)
+//                        {
+//                          //  img_circles[i]=null;
+//
+//                        }
+//                    }
+//                    System.gc();
+//                    if(clr!=-1) {
+//                        img_count++;
+//                        img_circles[img_count] = new ImageView(GameBoard.this);
+//                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
+//                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
+//                        params.setMarginStart(lp.getMarginStart());
+//                        params.topMargin = lp.topMargin;
+//                        img_circles[img_count].setLayoutParams(params);
+//                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
+//                        relativelayout.addView(img_circles[img_count]);
+//
+//                        img_circles[img_count].setImageBitmap(bitmap);
+//
+//                    }
+//
+//                    img_view.setTextDirection(2);
+//                //    img_view.setVisibility(View.GONE);
+//                    //  img_circles[Integer.valueOf(img_view.getContentDescription().toString())]=null;
+//
+//                } catch (Exception e2) {
+//
+//                }
+//
+//
+//                try {
+//                    bitmap = Bitmap.createBitmap(
+//                            circle_size / 2, // Width
+//                            circle_size / 2, // Height
+//                            Bitmap.Config.ARGB_8888 // Config
+//                    );
+//
+//                    // Initialize a new Canvas instance
+//                    Canvas canvas = new Canvas(bitmap);
+//
+//                    // Draw a solid color to the canvas background
+//                    canvas.drawColor(Color.WHITE);
+//
+//                    // Initialize a new Paint instance to draw the Circle
+//                    Paint paint = new Paint();
+//                    paint.setStyle(Paint.Style.FILL);
+//                    int clr = get_color(lp.getMarginStart() + (circle_size / 2), lp.topMargin, circle_size / 2);
+//
+//                    paint.setColor(clr);
+//
+//                    paint.setAntiAlias(true);
+//
+//
+//                    canvas.drawCircle(
+//                            circle_size / 4, // cx
+//                            circle_size / 4, // cy
+//                            (int) (circle_size / 4), // Radius
+//                            paint // Paint
+//                    );
+//                    if(clr!=-1) {
+//                        img_count++;
+//                        img_circles[img_count] = new ImageView(GameBoard.this);
+//                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
+//                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
+//                        params.setMarginStart(lp.getMarginStart() + (circle_size / 2));
+//                        params.topMargin = lp.topMargin;
+//                        img_circles[img_count].setLayoutParams(params);
+//                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
+//                        relativelayout.addView(img_circles[img_count]);
+//
+//                        img_circles[img_count].setImageBitmap(bitmap);
+//                    }
+//                } catch (Exception e3) {
+//
+//                }
+//                try {
+//                    bitmap = Bitmap.createBitmap(
+//                            circle_size / 2, // Width
+//                            circle_size / 2, // Height
+//                            Bitmap.Config.ARGB_8888 // Config
+//                    );
+//
+//                    // Initialize a new Canvas instance
+//                    Canvas canvas = new Canvas(bitmap);
+//
+//                    // Draw a solid color to the canvas background
+//                    canvas.drawColor(Color.WHITE);
+//
+//                    // Initialize a new Paint instance to draw the Circle
+//                    Paint paint = new Paint();
+//                    paint.setStyle(Paint.Style.FILL);
+//                    int clr = get_color(lp.getMarginStart(), lp.topMargin + (circle_size / 2), circle_size / 2);
+//
+//                    paint.setColor(clr);
+//
+//                    paint.setAntiAlias(true);
+//
+//
+//                    canvas.drawCircle(
+//                            circle_size / 4, // cx
+//                            circle_size / 4, // cy
+//                            (int) (circle_size / 4), // Radius
+//                            paint // Paint
+//                    );
+//                    if(clr!=-1) {
+//                        img_count++;
+//                        img_circles[img_count] = new ImageView(GameBoard.this);
+//                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
+//                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
+//                        params.setMarginStart(lp.getMarginStart());
+//                        params.topMargin = lp.topMargin + (circle_size / 2);
+//                        img_circles[img_count].setLayoutParams(params);
+//                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
+//                        relativelayout.addView(img_circles[img_count]);
+//
+//                        img_circles[img_count].setImageBitmap(bitmap);
+//                    }
+//                } catch (Exception e3) {
+//
+//                }
+//
+//                try {
+//                    bitmap = Bitmap.createBitmap(
+//                            circle_size / 2, // Width
+//                            circle_size / 2, // Height
+//                            Bitmap.Config.ARGB_8888 // Config
+//                    );
+//
+//                    // Initialize a new Canvas instance
+//                    Canvas canvas = new Canvas(bitmap);
+//
+//                    // Draw a solid color to the canvas background
+//                    canvas.drawColor(Color.WHITE);
+//
+//                    // Initialize a new Paint instance to draw the Circle
+//                    Paint paint = new Paint();
+//                    paint.setStyle(Paint.Style.FILL);
+//                    int clr = get_color(lp.getMarginStart() + (circle_size / 2), lp.topMargin + (circle_size / 2), circle_size / 2);
+//
+//                    paint.setColor(clr);
+//
+//                    paint.setAntiAlias(true);
+//
+//
+//                    canvas.drawCircle(
+//                            circle_size / 4, // cx
+//                            circle_size / 4, // cy
+//                            (int) (circle_size / 4), // Radius
+//                            paint // Paint
+//                    );
+//                    if(clr!=-1) {
+//                        img_count++;
+//                        img_circles[img_count] = new ImageView(GameBoard.this);
+//                        RelativeLayout relativelayout = (RelativeLayout) findViewById(R.id.lay_contain_image);
+//                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circle_size / 2, circle_size / 2);
+//                        params.setMarginStart(lp.getMarginStart() + (circle_size / 2));
+//                        params.topMargin = lp.topMargin + (circle_size / 2);
+//                        img_circles[img_count].setLayoutParams(params);
+//                        img_circles[img_count].setContentDescription(String.valueOf(img_count));
+//                        relativelayout.addView(img_circles[img_count]);
+//
+//                        img_circles[img_count].setImageBitmap(bitmap);
+//                    }
+//                } catch (Exception e3) {
+//
+//                }
+//
+//
+//                //  Toast.makeText(this, String.valueOf(img_view.getContentDescription().toString()), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
+//
+//    }
 
 
     private int get_color(int start, int top, int size) {
@@ -598,7 +604,8 @@ public class GameBoard extends AppCompatActivity {
                 inverse.mapPoints(touchPoint);
                 int xCoord = Integer.valueOf((int) touchPoint[0]);
                 int yCoord = Integer.valueOf((int) touchPoint[1]);
-                int pixel = bitmap.getPixel(xCoord, yCoord);
+                if(xCoord<bitmap.getWidth() && yCoord<bitmap.getHeight()) {
+                    int pixel = bitmap.getPixel(xCoord, yCoord);
 
                 pixel_count++;
                 redValue = Color.red(pixel);
@@ -607,7 +614,7 @@ public class GameBoard extends AppCompatActivity {
                 sum_red += redValue;
                 sum_green += greenValue;
                 sum_blue += blueValue;
-
+                }
             }
 
         }
@@ -630,69 +637,7 @@ public class GameBoard extends AppCompatActivity {
 
 
     public void clk_btn1(View view) {
-        //  ImageView imageView = findViewById(R.id.imageView);
-        Bitmap bitmap = ((BitmapDrawable) imageview1.getDrawable()).getBitmap();
 
-        int
-                sum_red = 0;
-        int
-                sum_blue = 0;
-        int
-                sum_green = 0;
-        int
-                pixel_count = 0;
-        int redValue = 0;
-        int blueValue = 0;
-        int greenValue = 0;
-        for (int i = 1; i < bitmap.getWidth(); i += 4) {
-            for (int j = 1; j < bitmap.getHeight(); j += 4) {
-
-                int pixel = bitmap.getPixel(i, j);
-
-                pixel_count++;
-                redValue = Color.red(pixel);
-                blueValue = Color.blue(pixel);
-                greenValue = Color.green(pixel);
-                sum_red += redValue;
-                sum_green += greenValue;
-                sum_blue += blueValue;
-
-            }
-
-        }
-        int avg_red = (int) (sum_red / pixel_count);
-        int avg_blue = (int) (sum_blue / pixel_count);
-        int avg_green = (int) (sum_green / pixel_count);
-
-        bitmap = Bitmap.createBitmap(
-                img_size, // Width
-                img_size, // Height
-                Bitmap.Config.ARGB_8888 // Config
-        );
-
-        // Initialize a new Canvas instance
-        Canvas canvas = new Canvas(bitmap);
-
-        // Draw a solid color to the canvas background
-        canvas.drawColor(Color.WHITE);
-
-        // Initialize a new Paint instance to draw the Circle
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.rgb(avg_red, avg_green, avg_blue));
-        paint.setAntiAlias(true);
-
-
-        canvas.drawCircle(
-                canvas.getWidth() / 2, // cx
-                canvas.getHeight() / 2, // cy
-                (int) (img_size / 2), // Radius
-                paint // Paint
-        );
-
-        // Display the newly created bitmap on app interface
-        // ImageView mImageView = findViewById(R.id.imageView);
-        img_circles[img_count].setImageBitmap(bitmap);
     }
 
     public void clk_random_txt(View view) {
@@ -716,4 +661,236 @@ public class GameBoard extends AppCompatActivity {
     public void clk_ans_txt(View view) {
 
     }
+        int
+            pr=1;
+    public void clk_mute(View view) {
+        tim = new Timer("break");
+        tim.start();
+
+
+    }
+
+    public void clk_coin(View view) {
+
+        Log.d("majid","bb");
+
+        draw_circle(1,1);
+        draw_circle(2,2);
+
+        draw_circle(4,3);
+        draw_circle(8,4);
+        draw_circle(16,5);
+        draw_circle(32,6);
+        draw_circle(64,7);
+
+        Log.d("majid","aa");
+    }
+
+    private void draw_circle(int p,int level) {
+    //    Bitmap bitmap = ((BitmapDrawable) imageview1.getDrawable()).getBitmap();
+        int cirle_size=(int)(img_size/64);
+        Paint paint = new Paint();
+        int clr1=1;
+        int clr;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        int
+                x_color =1;
+        int
+                y_color =1;
+        for(int i=0;i<64 ;i+=p)
+            for(int j=0;j<64;j+=p)
+            {
+
+                if(i==0)
+                    x_color=1;
+                else
+                    x_color = ((i)*cirle_size);
+
+                if(j==0)
+                    y_color=1;
+                else
+                    y_color = ((j)*cirle_size);
+
+                clr = get_color(x_color,y_color , cirle_size*p);
+                img_color_circle[img_count]=clr;
+
+                bitmap = Bitmap.createBitmap(
+
+                        cirle_size*p, // Width
+                        cirle_size*p, // Height
+                        Bitmap.Config.ARGB_8888 // Config
+                );
+
+                // Initialize a new Canvas instance
+                Canvas canvas = new Canvas(bitmap);
+
+                // Draw a solid color to the canvas background
+                canvas.drawColor(Color.WHITE);
+
+                // Initialize a new Paint instance to draw the Circle
+                //   if(clr!=clr1)
+                {
+                    paint = new Paint();
+                    paint.setStyle(Paint.Style.FILL);
+                    paint.setColor(clr);
+                    paint.setAntiAlias(true);
+
+                }
+
+
+                canvas.drawCircle(
+                        (cirle_size/2)*p, // cx
+                        (cirle_size/2)*p, // cy
+                        (int) ((cirle_size / 2)*p), // Radius
+                        paint // Paint
+                );
+
+                // Display the newly created bitmap on app interface
+                // ImageView mImageView = findViewById(R.id.imageView);
+
+
+
+                img_circles[level][(i+1)][(j+1)] = new ImageView(GameBoard.this);
+
+                params.setMarginStart(x_color);
+                params.topMargin = y_color;
+                img_circles[level][(i+1)][(j+1)].setLayoutParams(params);
+                //img_circles[img_count].setContentDescription(String.valueOf(img_count));
+                relativelayout.addView(img_circles[level][(i+1)][(j+1)]);
+
+                img_circles[level][(i+1)][(j+1)].setImageBitmap(bitmap);
+                String
+                        str1="i="+String.valueOf(i+1)+"j="+String.valueOf(j+1)+"l="+String.valueOf(level);
+                img_circles[level][(i+1)][(j+1)].setContentDescription(str1);
+                if(p!=64)
+                    img_circles[level][(i+1)][(j+1)].setVisibility(View.GONE);
+//                onTouchView[img_count] = img_circles[level][(i+1)][(j+1)];
+//                onTouchView[img_count].setOnTouchListener(this);
+                img_count++;
+
+
+
+            }
+    }
+//    public boolean onTouch(View view, MotionEvent event)
+//    {
+//       // Log.d("majid",);
+//        String
+//                desc=view.getContentDescription().toString();
+//       // if(event.getAction() == 0)
+//        {
+//            int start1 = desc.indexOf("i=");
+//            int end1 = desc.indexOf("j=");
+//            int  ii = Integer.valueOf(desc.substring(start1 + 2, end1));
+//           // Log.d("majid",ii);
+//
+//             start1 = desc.indexOf("j=");
+//             end1 = desc.indexOf("l=");
+//            int  jj = Integer.valueOf(desc.substring(start1 + 2, end1));
+//            //Log.d("majid",jj);
+//
+//             start1 = desc.indexOf("l=");
+//
+//            int  ll = Integer.valueOf(desc.substring(start1 + 2, desc.length()));
+//           // Log.d("majid",ll);
+//
+//            view.setVisibility(View.GONE);
+//            img_circles[ll-1][ii][jj].setVisibility(View.VISIBLE);
+//            img_circles[ll-1][ii][jj+((int)((Math.pow(2,ll-2))))].setVisibility(View.VISIBLE);
+//            img_circles[ll-1][ii+((int)((Math.pow(2,ll-2))))][jj+((int)((Math.pow(2,ll-2))))].setVisibility(View.VISIBLE);
+//            img_circles[ll-1][ii+((int)((Math.pow(2,ll-2))))][jj].setVisibility(View.VISIBLE);
+//            //  Code to display x and y go here
+//        }
+//        return false;
+//    }
+
+    int
+        ii=1,jj=1,ll=7;
+
+
+    public class Timer extends Thread {
+
+        int oneSecond=1000;
+        int value=0;
+        String TAG="Timer";
+        String typ="";
+        //@Override
+        public Timer(String type)
+        {
+            typ = type;
+        }
+        @Override
+        public void run() {
+
+            for(;;){
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+
+
+
+                        if(typ.equals("break")) {
+                            Log.d("majid","aloooo");
+                            if(ll>1) {
+                                img_circles[ll][ii][jj].setVisibility(View.GONE);
+                                img_circles[ll-1][ii][jj].setVisibility(View.VISIBLE);
+                                img_circles[ll-1][ii][jj+((int)((Math.pow(2,ll-2))))].setVisibility(View.VISIBLE);
+                                img_circles[ll-1][ii+((int)((Math.pow(2,ll-2))))][jj+((int)((Math.pow(2,ll-2))))].setVisibility(View.VISIBLE);
+                                img_circles[ll-1][ii+((int)((Math.pow(2,ll-2))))][jj].setVisibility(View.VISIBLE);
+
+                                jj += (((int) ((Math.pow(2, ll - 1)))));
+                                if (jj > 64) {
+                                    ii += ((int) ((Math.pow(2, ll - 1))));
+                                    jj = 1;
+                                }
+                                if (ii > 64) {
+                                    ll--;
+                                    ii = 1;
+                                }
+                            }
+
+
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
+
+
+
+                    }
+                });
+
+
+                //   Log.d("majid", String.valueOf(value));
+                //Thread.currentThread();
+                try {
+
+
+                    Thread.sleep(10);
+                    //	Log.d(TAG, " " + value);
+                } catch (InterruptedException e) {
+                    System.out.println("timer interrupted");
+                    //value=0;
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+    }
+
 }

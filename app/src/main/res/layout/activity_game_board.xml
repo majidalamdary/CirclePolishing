@@ -123,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.52"
                         android:gravity="center"
+                        android:onClick="clk_coin"
                         android:orientation="horizontal"
                         android:padding="1dp">
 
@@ -179,7 +180,8 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:background="@drawable/white_btn">
+                        android:background="@drawable/white_btn"
+                        android:visibility="visible">
 
                     </RelativeLayout>
 
@@ -225,7 +227,7 @@
                                 android:textAlignment="center"
                                 android:layout_height="wrap_content"
                                 android:text=""
-                                android:textColor="@android:color/black" />
+                                android:textColor="@android:color/holo_red_dark" />
                         </LinearLayout>
 
                     </LinearLayout>
