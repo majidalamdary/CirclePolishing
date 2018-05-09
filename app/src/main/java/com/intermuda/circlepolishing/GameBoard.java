@@ -49,6 +49,10 @@ public class GameBoard extends AppCompatActivity  {
     int
             img_size = 0;
 
+
+    int[] ans_box = new int[17];
+    int[] ans_box_status = new int[17];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,12 @@ public class GameBoard extends AppCompatActivity  {
         wm.getDefaultDisplay().getMetrics(displayMetrics);
         fun = new functions();
 
+        for(int i=1;i<=16;i++)
+        {
+            ans_box[i]=0;
+            ans_box_status[i]=0;
+
+        }
         font_name = fun.font_name;
         target_word = "instagram";
         relativelayout =findViewById(R.id.lay_contain_image);
@@ -642,30 +652,154 @@ public class GameBoard extends AppCompatActivity  {
 
     public void clk_random_txt(View view) {
 
-
+        //http://193.104.22.14:2055/CPSMSService/Access
         TextView txt_random = (TextView) view;
+//        int[] ans_box = new int[17];
+//        ans_box[1]= R.id.txt_ans_box1;
+//        ans_box[2]= R.id.txt_ans_box2;
+//        ans_box[3]= R.id.txt_ans_box3;
+//        ans_box[4]= R.id.txt_ans_box4;
+//        ans_box[5]= R.id.txt_ans_box5;
+//        ans_box[6]= R.id.txt_ans_box6;
+//        ans_box[7]= R.id.txt_ans_box7;
+//        ans_box[8]= R.id.txt_ans_box8;
+//        ans_box[9]= R.id.txt_ans_box9;
+//        ans_box[10]= R.id.txt_ans_box10;
+//        ans_box[11]= R.id.txt_ans_box11;
+//        ans_box[12]= R.id.txt_ans_box12;
+//        ans_box[13]= R.id.txt_ans_box13;
+//        ans_box[14]= R.id.txt_ans_box14;
+//        ans_box[15]= R.id.txt_ans_box15;
+//        ans_box[16]= R.id.txt_ans_box16;
 
-        if(txt_random.getId() == R.id.txt_random_box1)
+
+        int[] random_box = new int[22];
+        random_box[1]= R.id.txt_random_box1;
+        random_box[2]= R.id.txt_random_box2;
+        random_box[3]= R.id.txt_random_box3;
+        random_box[4]= R.id.txt_random_box4;
+        random_box[5]= R.id.txt_random_box5;
+        random_box[6]= R.id.txt_random_box6;
+        random_box[7]= R.id.txt_random_box7;
+        random_box[8]= R.id.txt_random_box8;
+        random_box[9]= R.id.txt_random_box9;
+        random_box[10]= R.id.txt_random_box10;
+        random_box[11]= R.id.txt_random_box11;
+        random_box[12]= R.id.txt_random_box12;
+        random_box[13]= R.id.txt_random_box13;
+        random_box[14]= R.id.txt_random_box14;
+        random_box[15]= R.id.txt_random_box15;
+        random_box[16]= R.id.txt_random_box16;
+        random_box[17]= R.id.txt_random_box17;
+        random_box[18]= R.id.txt_random_box18;
+        random_box[19]= R.id.txt_random_box19;
+        random_box[20]= R.id.txt_random_box20;
+        random_box[21]= R.id.txt_random_box21;
+        int
+            selected_text_box=0,index=0;
+        for(int i=1;i<=21;i++)
         {
-            Toast.makeText(this, txt_random.getText().toString(), Toast.LENGTH_SHORT).show();
+            if(random_box[i]==view.getId()  )
+            {
+                selected_text_box=random_box[i];
+                index=i;
+                break;
+            }
+        }
+        TextView txt_index = findViewById(selected_text_box);
+        if(txt_index.getText().toString().length()>0)
+        for(int i=1;i<=16;i++)
+        {
+            if(ans_box[i]==0 )
+            {
+                if(i<=target_word.length()) {
+                    txt_ans_box[i].setText(txt_index.getText().toString());
+                    txt_index.setText("");
+                    ans_box[i] = index;
+                    break;
+                }
+                else
+                {
+
+                    break;
+                }
+            }
+        }
+
+     //   Toast.makeText(this, txt_index.getText().toString(), Toast.LENGTH_SHORT).show();
+
+
+        String
+                ans_str="";
+        for(int i=0;i<target_word.length();i++)
+        {
+            ans_str+=(txt_ans_box[i+1].getText().toString());
 
         }
-        if(txt_random.getId() == R.id.txt_random_box2)
+        //Toast.makeText(this, ans_str, Toast.LENGTH_SHORT).show();
+        if(ans_str.equals(target_word))
         {
-            Toast.makeText(this, txt_random.getText().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Its ok", Toast.LENGTH_SHORT).show();
         }
-
 
     }
 
     public void clk_ans_txt(View view) {
+        int[] ans_box1 = new int[17];
+        ans_box1[1]= R.id.txt_ans_box1;
+        ans_box1[2]= R.id.txt_ans_box2;
+        ans_box1[3]= R.id.txt_ans_box3;
+        ans_box1[4]= R.id.txt_ans_box4;
+        ans_box1[5]= R.id.txt_ans_box5;
+        ans_box1[6]= R.id.txt_ans_box6;
+        ans_box1[7]= R.id.txt_ans_box7;
+        ans_box1[8]= R.id.txt_ans_box8;
+        ans_box1[9]= R.id.txt_ans_box9;
+        ans_box1[10]= R.id.txt_ans_box10;
+        ans_box1[11]= R.id.txt_ans_box11;
+        ans_box1[12]= R.id.txt_ans_box12;
+        ans_box1[13]= R.id.txt_ans_box13;
+        ans_box1[14]= R.id.txt_ans_box14;
+        ans_box1[15]= R.id.txt_ans_box15;
+        ans_box1[16]= R.id.txt_ans_box16;
+
+
+
+        int
+                selected_text_box=0,index=0;
+        for(int i=1;i<=16;i++)
+        {
+            if(ans_box1[i]==view.getId() && ans_box_status[i]==0 )
+            {
+                selected_text_box=ans_box1[i];
+                index=i;
+                TextView txt_index = findViewById(selected_text_box);
+                if(txt_index.getText().toString().length()>0)
+                {
+                    txt_random_box[ans_box[index]].setText(txt_index.getText());
+                    txt_index.setText("");
+                    ans_box[index]=0;
+                    ans_box_status[index]=0;
+                }
+                break;
+            }
+        }
+
+
+
 
     }
         int
             pr=1;
     public void clk_mute(View view) {
-        tim = new Timer("break");
-        tim.start();
+//        tim = new Timer("break");
+//        tim.start();
+
+
+        ans_box[5] = 4;
+        ans_box_status[5]=1;
+        txt_ans_box[5].setText("G");
+        txt_ans_box[5].setTextColor(Color.rgb(100,100,100));
 
 
     }
