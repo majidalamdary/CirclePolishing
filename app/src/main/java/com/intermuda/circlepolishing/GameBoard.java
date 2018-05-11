@@ -31,7 +31,9 @@ public class GameBoard extends AppCompatActivity  {
     private int screenWidth;
     private int screenHeight;
     RelativeLayout relativelayout ;
-   // View[] onTouchView = new View[2000000];
+    RelativeLayout lay_stars;
+
+    // View[] onTouchView = new View[2000000];
     String
             font_name = "";
     functions fun;
@@ -53,6 +55,9 @@ public class GameBoard extends AppCompatActivity  {
     int[] ans_box = new int[17];
     int[] ans_box_status = new int[17];
 
+    double stars_size=0;
+    private double dec_count=1.5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +75,7 @@ public class GameBoard extends AppCompatActivity  {
 
         }
         font_name = fun.font_name;
-        target_word = "instagram";
+        target_word = "dicaprio";
         relativelayout =findViewById(R.id.lay_contain_image);
 //        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
 //        fun.u_name =  settings.getString("homeScore","");
@@ -81,7 +86,8 @@ public class GameBoard extends AppCompatActivity  {
         screenHeight = displayMetrics.heightPixels;
         imageview1 = findViewById(R.id.imageView);
 
-
+        lay_stars=  findViewById(R.id.lay10);
+        stars_size =(screenWidth*.32);
 
 
 
@@ -234,13 +240,11 @@ public class GameBoard extends AppCompatActivity  {
 
 
 
-        TextView txt_subject= (TextView) findViewById(R.id.txt_subject);
-        txt_subject.setTypeface(tf);
-        txt_subject.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.039));
 
 
 
-
+        RelativeLayout.LayoutParams lp_lay_stars = new RelativeLayout.LayoutParams((int)(screenWidth*.32),RelativeLayout.LayoutParams.MATCH_PARENT);
+        lay_stars.setLayoutParams(lp_lay_stars);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,11 +261,11 @@ public class GameBoard extends AppCompatActivity  {
 //        LinearLayout.LayoutParams lp_lay_coin = new LinearLayout.LayoutParams((int)(screenHeight*0.15),(int)(screenHeight*0.042));
 //        lay_coin.setLayoutParams(lp_lay_coin);
 
-        LinearLayout.LayoutParams lp_img_coin1 = new LinearLayout.LayoutParams((int)(screenWidth*.078),(int)(screenHeight*.054));
+        LinearLayout.LayoutParams lp_img_coin1 = new LinearLayout.LayoutParams((int)(screenWidth*.06),(int)(screenHeight*.041));
         ImageView img_coin = (ImageView) findViewById(R.id.img_coin);
         img_coin.setLayoutParams(lp_img_coin1);
 
-        LinearLayout.LayoutParams lp_img_speaker = new LinearLayout.LayoutParams((int)(screenWidth*.087),(int)(screenHeight*.051));
+        LinearLayout.LayoutParams lp_img_speaker = new LinearLayout.LayoutParams((int)(screenWidth*.062),(int)(screenHeight*.036));
         ImageView img_speaker = (ImageView) findViewById(R.id.img_speaker);
         img_speaker.setLayoutParams(lp_img_speaker);
 
@@ -269,7 +273,15 @@ public class GameBoard extends AppCompatActivity  {
 
         TextView txt_coin_count = (TextView) findViewById(R.id.txt_coin_count);
         txt_coin_count.setTypeface(tf);
-        txt_coin_count.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.052));
+        txt_coin_count.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.044));
+
+
+
+
+
+        LinearLayout.LayoutParams lp_img_help = new LinearLayout.LayoutParams((int)(screenWidth*.2),(int)(screenHeight*.085));
+        ImageView img_help = findViewById(R.id.img_help);
+        img_help.setLayoutParams(lp_img_help);
 
 
 
@@ -277,6 +289,106 @@ public class GameBoard extends AppCompatActivity  {
 
 
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        RelativeLayout.LayoutParams lp_lay_help = new RelativeLayout.LayoutParams((int)(screenWidth*.8),(int)(screenHeight*.72));
+        RelativeLayout lay_help = findViewById(R.id.lay_help);
+        lay_help.setLayoutParams(lp_lay_help);
+
+        RelativeLayout.LayoutParams lp_img_back = new RelativeLayout.LayoutParams((int)(screenWidth*.12),(int)(screenHeight*.07));
+        lp_img_back.setMarginStart((int)(screenWidth*.3));
+        lp_img_back.topMargin=((int)(screenHeight*.62));
+        ImageView img_back  = findViewById(R.id.img_back);
+        img_back .setLayoutParams(lp_img_back);
+
+        RelativeLayout.LayoutParams lp_btn_subject1 = new RelativeLayout.LayoutParams((int)(screenWidth*.7),(int)(screenHeight*.1));
+        lp_btn_subject1.setMarginStart((int)(screenWidth*.03));
+        lp_btn_subject1.topMargin=((int)(screenHeight*.27));
+        LinearLayout btn_subject1  = findViewById(R.id.btn_subject1);
+        btn_subject1 .setLayoutParams(lp_btn_subject1);
+
+        RelativeLayout.LayoutParams lp_btn_subject2 = new RelativeLayout.LayoutParams((int)(screenWidth*.7),(int)(screenHeight*.1));
+        lp_btn_subject2.setMarginStart((int)(screenWidth*.03));
+        lp_btn_subject2.topMargin=((int)(screenHeight*.39));
+        LinearLayout btn_subject2  = findViewById(R.id.btn_subject2);
+        btn_subject2 .setLayoutParams(lp_btn_subject2);
+
+        RelativeLayout.LayoutParams lp_btn_subject3 = new RelativeLayout.LayoutParams((int)(screenWidth*.7),(int)(screenHeight*.1));
+        lp_btn_subject3.setMarginStart((int)(screenWidth*.03));
+        lp_btn_subject3.topMargin=((int)(screenHeight*.51));
+        LinearLayout btn_subject3  = findViewById(R.id.btn_subject3);
+        btn_subject3 .setLayoutParams(lp_btn_subject3);
+
+        LinearLayout.LayoutParams lp_img_price1 = new LinearLayout.LayoutParams((int)(screenWidth*.14),(int)(screenHeight*.089));
+        ImageView img_price1 = findViewById(R.id.img_price1);
+        img_price1.setLayoutParams(lp_img_price1);
+        LinearLayout.LayoutParams lp_img_price2 = new LinearLayout.LayoutParams((int)(screenWidth*.14),(int)(screenHeight*.089));
+        ImageView img_price2 = findViewById(R.id.img_price2);
+        img_price2.setLayoutParams(lp_img_price2);
+        LinearLayout.LayoutParams lp_img_price3 = new LinearLayout.LayoutParams((int)(screenWidth*.14),(int)(screenHeight*.089));
+        ImageView img_price3 = findViewById(R.id.img_price3);
+        img_price3.setLayoutParams(lp_img_price3);
+
+
+
+        LinearLayout.LayoutParams lp_lay_btn1 = new LinearLayout.LayoutParams((int)(screenWidth*.23),(int)(screenHeight*.07));
+        LinearLayout lay_btn1  = findViewById(R.id.lay_btn1);
+        lay_btn1 .setLayoutParams(lp_lay_btn1);
+        LinearLayout.LayoutParams lp_lay_btn2 = new LinearLayout.LayoutParams((int)(screenWidth*.23),(int)(screenHeight*.07));
+        LinearLayout lay_btn2  = findViewById(R.id.lay_btn2);
+        lay_btn2 .setLayoutParams(lp_lay_btn2);
+        LinearLayout.LayoutParams lp_lay_btn3 = new LinearLayout.LayoutParams((int)(screenWidth*.23),(int)(screenHeight*.07));
+        LinearLayout lay_btn3  = findViewById(R.id.lay_btn3);
+        lay_btn3 .setLayoutParams(lp_lay_btn3);
+
+        LinearLayout.LayoutParams lp_img_btn_coin1 = new LinearLayout.LayoutParams((int)(screenWidth*.044),(int)(screenHeight*.044));
+        lp_img_btn_coin1.setMarginEnd((int)(screenWidth*.01));
+        ImageView img_btn_coin1 = findViewById(R.id.img_btn_coin1);
+        img_btn_coin1.setLayoutParams(lp_img_btn_coin1);
+
+        LinearLayout.LayoutParams lp_img_btn_coin2 = new LinearLayout.LayoutParams((int)(screenWidth*.044),(int)(screenHeight*.044));
+        lp_img_btn_coin2.setMarginEnd((int)(screenWidth*.01));
+        ImageView img_btn_coin2 = findViewById(R.id.img_btn_coin2);
+        img_btn_coin2.setLayoutParams(lp_img_btn_coin2);
+
+        LinearLayout.LayoutParams lp_img_btn_coin3 = new LinearLayout.LayoutParams((int)(screenWidth*.044),(int)(screenHeight*.044));
+        lp_img_btn_coin3.setMarginEnd((int)(screenWidth*.01));
+        ImageView img_btn_coin3 = findViewById(R.id.img_btn_coin3);
+        img_btn_coin3.setLayoutParams(lp_img_btn_coin3);
+
+        TextView txt_coint_count1 = (TextView) findViewById(R.id.txt_coint_count1);
+        txt_coint_count1.setTypeface(tf);
+        txt_coint_count1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.051));
+        TextView txt_coint_count2 = (TextView) findViewById(R.id.txt_coint_count2);
+        txt_coint_count2.setTypeface(tf);
+        txt_coint_count2.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.051));
+        TextView txt_coint_count3 = (TextView) findViewById(R.id.txt_coint_count3);
+        txt_coint_count3.setTypeface(tf);
+        txt_coint_count3.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.042));
+
+
+        TextView txt_price1 = (TextView) findViewById(R.id.txt_price1);
+        txt_price1.setTypeface(tf);
+        txt_price1.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.048));
+        LinearLayout.LayoutParams lp_txt_price1 = (LinearLayout.LayoutParams) txt_price1.getLayoutParams();
+        lp_txt_price1.topMargin=((int)(screenWidth*.01));
+        txt_price1.setLayoutParams(lp_txt_price1);
+
+        TextView txt_price2 = (TextView) findViewById(R.id.txt_price2);
+        txt_price2.setTypeface(tf);
+        txt_price2.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.048));
+        LinearLayout.LayoutParams lp_txt_price2 = (LinearLayout.LayoutParams) txt_price2.getLayoutParams();
+        lp_txt_price2.topMargin=((int)(screenWidth*.01));
+        txt_price2.setLayoutParams(lp_txt_price2);
+
+        TextView txt_price3 = (TextView) findViewById(R.id.txt_price3);
+        txt_price3.setTypeface(tf);
+        txt_price3.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.048));
+        LinearLayout.LayoutParams lp_txt_price3 = (LinearLayout.LayoutParams) txt_price3.getLayoutParams();
+        lp_txt_price3.topMargin=((int)(screenWidth*.01));
+        txt_price3.setLayoutParams(lp_txt_price3);
 
 
 
@@ -284,71 +396,68 @@ public class GameBoard extends AppCompatActivity  {
     }
 
     private Rect imageRect;
-
+    private boolean on_touch_disabled =false;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+        if(!on_touch_disabled) {
+            imageRect = new Rect();
+            int x = (int) event.getX();
+            int y = (int) event.getY();
 
-
-        imageRect = new Rect();
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-
-               relativelayout.getGlobalVisibleRect(imageRect);
-        if (imageRect.contains(x, y)) {
-            int
-                    X_image = imageRect.centerX()-(imageRect.width()/2);
-            int
-                    Y_image = imageRect.centerY()-(imageRect.height()/2);
-
-            int
-                    new_x=x-X_image;
-            int
-                    new_y=y-Y_image;
-            int cirle_size=(int)(img_size/64);
-
-
-            int
-                    circle_number = ((int)Math.floor(new_x/cirle_size));
-            int
-                    circle_number1 = ((int)Math.floor(new_y/cirle_size));
-
-            circle_number=63-circle_number+1;
-         //   circle_number1=63-circle_number1+1;
-
-            for(int l=7;l>=2;l--) {
+            relativelayout.getGlobalVisibleRect(imageRect);
+            if (imageRect.contains(x, y)) {
                 int
-                        i = (circle_number / ((int) ((Math.pow(2, l - 1)))));
+                        X_image = imageRect.centerX() - (imageRect.width() / 2);
                 int
-                        j = (circle_number1 / ((int) ((Math.pow(2, l - 1))))) ;
+                        Y_image = imageRect.centerY() - (imageRect.height() / 2);
 
-                i=i*(int)(Math.pow(2, l - 1))+1;
-                j=j*(int)(Math.pow(2, l - 1))+1;
-                if(i==0)
-                    i=1;
-                if(j==0)
-                    j=1;
-                if(i<65 && j<65)
-                if(img_circles[l][i][j].getVisibility()!=View.GONE)
-                {
-                    img_circles[l][i][j].setVisibility(View.GONE);
-                    img_circles[l - 1][i][j].setVisibility(View.VISIBLE);
-                    img_circles[l - 1][i][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
-                    img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
-                    img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j].setVisibility(View.VISIBLE);
+                int
+                        new_x = x - X_image;
+                int
+                        new_y = y - Y_image;
+                int cirle_size = (int) (img_size / 64);
 
-                    break;
+
+                int
+                        circle_number = ((int) Math.floor(new_x / cirle_size));
+                int
+                        circle_number1 = ((int) Math.floor(new_y / cirle_size));
+
+                //   circle_number=63-circle_number+1;
+                //   circle_number1=63-circle_number1+1;
+
+                for (int l = 7; l >= 2; l--) {
+                    int
+                            i = (circle_number / ((int) ((Math.pow(2, l - 1)))));
+                    int
+                            j = (circle_number1 / ((int) ((Math.pow(2, l - 1)))));
+
+                    i = i * (int) (Math.pow(2, l - 1)) + 1;
+                    j = j * (int) (Math.pow(2, l - 1)) + 1;
+                    if (i == 0)
+                        i = 1;
+                    if (j == 0)
+                        j = 1;
+                    if (i < 65 && j < 65)
+                        if (img_circles[l][i][j].getVisibility() != View.GONE && stars_size > 0) {
+                            stars_size -= dec_count;
+                            RelativeLayout.LayoutParams lp_lay_stars = new RelativeLayout.LayoutParams((int) stars_size, RelativeLayout.LayoutParams.MATCH_PARENT);
+                            lay_stars.setLayoutParams(lp_lay_stars);
+                            img_circles[l][i][j].setVisibility(View.GONE);
+                            img_circles[l - 1][i][j].setVisibility(View.VISIBLE);
+                            img_circles[l - 1][i][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
+                            img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j + ((int) ((Math.pow(2, l - 2))))].setVisibility(View.VISIBLE);
+                            img_circles[l - 1][i + ((int) ((Math.pow(2, l - 2))))][j].setVisibility(View.VISIBLE);
+
+                            break;
+                        }
+                    // Log.d("majid", "x= " + String.valueOf(i) + "  y= " + String.valueOf(j)+" l= "+String.valueOf(l));
+
+
                 }
-               // Log.d("majid", "x= " + String.valueOf(i) + "  y= " + String.valueOf(j)+" l= "+String.valueOf(l));
-
-
-
-
+                //Log.d("majid","x= "+String.valueOf(x)+"  y= "+String.valueOf(y));
             }
-            //Log.d("majid","x= "+String.valueOf(x)+"  y= "+String.valueOf(y));
-        }
-
-
 
 
 //        for(int i=2;i<=7;i++)
@@ -357,9 +466,7 @@ public class GameBoard extends AppCompatActivity  {
 //        }
 
 
-
-
-
+        }
 
         return false;
     }
@@ -796,10 +903,6 @@ public class GameBoard extends AppCompatActivity  {
 //        tim.start();
 
 
-        ans_box[5] = 4;
-        ans_box_status[5]=1;
-        txt_ans_box[5].setText("G");
-        txt_ans_box[5].setTextColor(Color.rgb(100,100,100));
 
 
     }
@@ -940,6 +1043,75 @@ public class GameBoard extends AppCompatActivity  {
 
     int
         ii=1,jj=1,ll=7;
+
+    public void clk_help(View view) {
+
+
+
+        RelativeLayout lay_help_main = findViewById(R.id.lay_help_main);
+        lay_help_main.setVisibility(View.VISIBLE);
+
+        LinearLayout lay_main = findViewById(R.id.lay_main);
+        fun.enableDisableView(lay_main,false);
+        on_touch_disabled=true;
+
+    }
+
+    public void clk_back_from_help(View view) {
+        RelativeLayout lay_help_main = findViewById(R.id.lay_help_main);
+        lay_help_main.setVisibility(View.GONE);
+
+        LinearLayout lay_main = findViewById(R.id.lay_main);
+        fun.enableDisableView(lay_main,true);
+        on_touch_disabled=false;
+    }
+
+    public void clk_help1(View view) {
+      //  Toast.makeText(this, String.valueOf(view.getId()), Toast.LENGTH_SHORT).show();
+        if(view.getId()==R.id.btn_help1)
+        {
+            int[] ans_box1 = new int[17];
+            ans_box1[1]= R.id.txt_ans_box1;
+            ans_box1[2]= R.id.txt_ans_box2;
+            ans_box1[3]= R.id.txt_ans_box3;
+            ans_box1[4]= R.id.txt_ans_box4;
+            ans_box1[5]= R.id.txt_ans_box5;
+            ans_box1[6]= R.id.txt_ans_box6;
+            ans_box1[7]= R.id.txt_ans_box7;
+            ans_box1[8]= R.id.txt_ans_box8;
+            ans_box1[9]= R.id.txt_ans_box9;
+            ans_box1[10]= R.id.txt_ans_box10;
+            ans_box1[11]= R.id.txt_ans_box11;
+            ans_box1[12]= R.id.txt_ans_box12;
+            ans_box1[13]= R.id.txt_ans_box13;
+            ans_box1[14]= R.id.txt_ans_box14;
+            ans_box1[15]= R.id.txt_ans_box15;
+            ans_box1[16]= R.id.txt_ans_box16;
+
+            boolean flag=true;
+            int rnd =0;
+            while (flag)
+            {
+                flag=false;
+                rnd = new Random().nextInt(target_word.length())+1;
+
+                if(ans_box_status[rnd]==1)
+                {
+                    flag=true;
+                }
+            }
+            Toast.makeText(this, String.valueOf(rnd), Toast.LENGTH_SHORT).show();
+            TextView txt_index = findViewById(ans_box1[rnd]);
+            clk_ans_txt(txt_index);
+            ans_box[rnd] = -1;
+            ans_box_status[rnd]=1;
+            txt_ans_box[rnd].setText(String.valueOf(target_word.toUpperCase().charAt(rnd-1)));
+            txt_ans_box[rnd].setTextColor(Color.rgb(100,100,100));
+
+
+            clk_back_from_help(view);
+        }
+    }
 
 
     public class Timer extends Thread {

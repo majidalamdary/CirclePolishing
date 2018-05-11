@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         TextView txt_notification = (TextView) findViewById(R.id.txt_notification);
         txt_notification.setTypeface(tf);
         txt_notification.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.046));
-
 
 
 
