@@ -1,5 +1,6 @@
 package com.intermuda.circlepolishing;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -39,7 +40,10 @@ public class GameBoard extends AppCompatActivity  {
     functions fun;
 
     String
-        target_word = "";
+            target_word = "";
+    String
+            tip_of_target_word = "";
+
     Timer tim;
 
     Typeface tf;
@@ -76,6 +80,7 @@ public class GameBoard extends AppCompatActivity  {
         }
         font_name = fun.font_name;
         target_word = "dicaprio";
+        tip_of_target_word ="He is An Artist";
         relativelayout =findViewById(R.id.lay_contain_image);
 //        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
 //        fun.u_name =  settings.getString("homeScore","");
@@ -1100,7 +1105,7 @@ public class GameBoard extends AppCompatActivity  {
                     flag=true;
                 }
             }
-            Toast.makeText(this, String.valueOf(rnd), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, String.valueOf(rnd), Toast.LENGTH_SHORT).show();
             TextView txt_index = findViewById(ans_box1[rnd]);
             clk_ans_txt(txt_index);
             ans_box[rnd] = -1;
@@ -1110,10 +1115,42 @@ public class GameBoard extends AppCompatActivity  {
 
 
             clk_back_from_help(view);
+            String
+                    ans_str="";
+            for(int i=0;i<target_word.length();i++)
+            {
+                ans_str+=(txt_ans_box[i+1].getText().toString());
+
+            }
+            //Toast.makeText(this, ans_str, Toast.LENGTH_SHORT).show();
+            if(ans_str.equals(target_word))
+            {
+                Toast.makeText(this, "Its ok", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if(view.getId()==R.id.btn_help2)
+        {
+            LinearLayout lay_btn2_container = findViewById(R.id.lay_btn2_container);
+            lay_btn2_container.setVisibility(View.GONE);
+            LinearLayout lay_contain_text2 = findViewById(R.id.lay_contain_text2);
+            LinearLayout.LayoutParams lp_lay_contain_text2 = (LinearLayout.LayoutParams) lay_contain_text2.getLayoutParams();
+            lp_lay_contain_text2.weight = 6;
+            lay_contain_text2.setLayoutParams(lp_lay_contain_text2);
+
+            TextView txt_coint_count2=findViewById(R.id.txt_coint_count2);
+            txt_coint_count2.setText(tip_of_target_word);
+        }
+        if(view.getId()==R.id.btn_help3)
+        {
+             tim = new Timer("break");
+             tim.start();
+             on_touch_disabled=true;
+             clk_back_from_help(view);
         }
     }
 
-
+    private ProgressDialog pDialog;
     public class Timer extends Thread {
 
         int oneSecond=1000;

@@ -1442,6 +1442,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/lay_empty1"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight=".2"
@@ -1481,11 +1482,13 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/lay_btn1_container"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
                                 android:gravity="center"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="visible">
 
                                 <LinearLayout
                                     android:id="@+id/lay_btn1"
@@ -1580,6 +1583,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/lay_empt2"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight=".2"
@@ -1601,6 +1605,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/lay_contain_text2"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
@@ -1619,6 +1624,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/lay_btn2_container"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="3"
