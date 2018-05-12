@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,8 +80,8 @@ public class GameBoard extends AppCompatActivity  {
 
         }
         font_name = fun.font_name;
-        target_word = "dicaprio";
-        tip_of_target_word ="He is An Artist";
+        target_word = "google";
+        tip_of_target_word ="It's An IT Company";
         relativelayout =findViewById(R.id.lay_contain_image);
 //        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
 //        fun.u_name =  settings.getString("homeScore","");
@@ -115,6 +116,15 @@ public class GameBoard extends AppCompatActivity  {
         set_content_size();
 
         set_boxes();
+
+
+        on_touch_disabled=true;
+        LinearLayout lay_main = findViewById(R.id.lay_main);
+        fun.enableDisableView(lay_main,false);
+        Timer tim1 =new Timer("draw");
+        tim1.milles=2000;
+        tim1.start();
+
 
 
     }
@@ -394,6 +404,21 @@ public class GameBoard extends AppCompatActivity  {
         LinearLayout.LayoutParams lp_txt_price3 = (LinearLayout.LayoutParams) txt_price3.getLayoutParams();
         lp_txt_price3.topMargin=((int)(screenWidth*.01));
         txt_price3.setLayoutParams(lp_txt_price3);
+
+        RelativeLayout.LayoutParams lp_progressBar = new RelativeLayout.LayoutParams((int)(screenWidth*.7),(int)(screenHeight*.1));
+        lp_progressBar.setMarginStart((int)(screenWidth*.03));
+        lp_progressBar.topMargin=((int)(screenHeight*.05));
+        ProgressBar progressBar  = findViewById(R.id.progressBar);
+        progressBar .setLayoutParams(lp_progressBar);
+
+        TextView txt_please_wait = (TextView) findViewById(R.id.txt_please_wait);
+        txt_please_wait.setTypeface(tf);
+        txt_please_wait.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.048));
+        RelativeLayout.LayoutParams lp_txt_please_wait = (RelativeLayout.LayoutParams) txt_please_wait.getLayoutParams();
+        lp_txt_please_wait.topMargin=((int)(screenWidth*.3));
+        lp_txt_please_wait.setMarginStart((int)(screenWidth*.24));
+
+        txt_please_wait.setLayoutParams(lp_txt_please_wait);
 
 
 
@@ -916,14 +941,7 @@ public class GameBoard extends AppCompatActivity  {
 
         Log.d("majid","bb");
 
-        draw_circle(1,1);
-        draw_circle(2,2);
 
-        draw_circle(4,3);
-        draw_circle(8,4);
-        draw_circle(16,5);
-        draw_circle(32,6);
-        draw_circle(64,7);
 
         Log.d("majid","aa");
     }
@@ -1150,6 +1168,9 @@ public class GameBoard extends AppCompatActivity  {
         }
     }
 
+    int drawable = 0;
+    int drawable_count = 0;
+
     private ProgressDialog pDialog;
     public class Timer extends Thread {
 
@@ -1157,6 +1178,8 @@ public class GameBoard extends AppCompatActivity  {
         int value=0;
         String TAG="Timer";
         String typ="";
+        public long milles=10;
+
         //@Override
         public Timer(String type)
         {
@@ -1174,7 +1197,29 @@ public class GameBoard extends AppCompatActivity  {
 
 
 
+                        if(typ.equals("draw"))
+                        {
+                            if( drawable_count==1) {
+                                drawable=1;
+                                draw_circle(1, 1);
+                                draw_circle(2, 2);
 
+                                draw_circle(4, 3);
+                                draw_circle(8, 4);
+                                draw_circle(16, 5);
+                                draw_circle(32, 6);
+                                draw_circle(64, 7);
+
+                                LinearLayout lay_main = findViewById(R.id.lay_main);
+                                fun.enableDisableView(lay_main,true);
+                                on_touch_disabled=false;
+                                RelativeLayout lay_wait = findViewById(R.id.lay_wait);
+                                lay_wait.setVisibility(View.GONE);
+                             //   Toast.makeText(GameBoard.this, "aaaaa", Toast.LENGTH_SHORT).show();
+                            }
+                            drawable_count++;
+
+                        }
 
                         if(typ.equals("break")) {
                             Log.d("majid","aloooo");
@@ -1222,7 +1267,7 @@ public class GameBoard extends AppCompatActivity  {
                 try {
 
 
-                    Thread.sleep(10);
+                    Thread.sleep(milles);
                     //	Log.d(TAG, " " + value);
                 } catch (InterruptedException e) {
                     System.out.println("timer interrupted");
