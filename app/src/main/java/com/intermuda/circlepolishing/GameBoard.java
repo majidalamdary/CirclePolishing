@@ -83,9 +83,7 @@ public class GameBoard extends AppCompatActivity  {
         target_word = "google";
         tip_of_target_word ="It's An IT Company";
         relativelayout =findViewById(R.id.lay_contain_image);
-//        SharedPreferences settings = getApplicationContext().getSharedPreferences("homeScore", 0);
-//        fun.u_name =  settings.getString("homeScore","");
-//        functions.u_name =  settings.getString("homeScore","");
+
 
         tf = Typeface.createFromAsset(getAssets(),font_name );
         screenWidth = displayMetrics.widthPixels;
